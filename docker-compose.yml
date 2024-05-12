@@ -17,17 +17,17 @@ services:
       - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222
   
-  products-micoserive:
-    build: ./products-ms
+  products-microserive:
+    build: ./products-microservice
     volumes:
-      - ./products-ms/src:/usr/src/app/src
+      - ./products-microservice/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3001
       - NATS_SERVERS=nats://nats-server:4222
       - DATABASE_URL=file:./dev.db
 
-  orders-micoserive:
+  orders-microserive:
     depends_on:
       - orders-db
     build: ./orders-ms
