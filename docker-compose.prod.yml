@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  nats-server:
+    image: nats:latest
+
+
+  client-gateway:
+    build: 
+      context: ./client-gateway
+      dockerfile: dockerfile.prod
+    image: client-gateway-prod
+    ports:
+      - ${CLIENT_GATEWAY_PORT}:${CLIENT_GATEWAY_PORT}
+    environment:
+      - PORT=${CLIENT_GATEWAY_PORT}
+      - NATS_SERVERS=nats://nats-server:4222
+
+
+  auth-microservice:
+    build: 
+      context: ./auth-ms
+      dockerfile: dockerfile.prod
+    image: auth-ms-prod
+    environment:
+      - PORT=3000
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=${AUTH_MONGO_URL}
+      - JWT_SECRET=${JWT_SECRET}
+
+  
+  products-microserive:
+    build: 
+      context: ./products-microservice
+      dockerfile: dockerfile.prod
+    image: products-ms-prod
+    environment:
+      - PORT=3000
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=file:./dev.db
+      
+
+  orders-microserive:
+    build: 
+      context: ./orders-ms
+      dockerfile: dockerfile.prod
+      args:
+        - ORDERS_DATABASE_PROD_URL=${ORDERS_DATABASE_PROD_URL}
+    image: orders-ms
+    environment:
+      - PORT=3000
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=${ORDERS_DATABASE_PROD_URL}
+
+
+
+
+# =============================
+# Payments Microservice
+# =============================
+  payments-ms:
+    container_name: payments-ms
+    build: 
+      context: ./payments-ms
+      dockerfile: dockerfile.prod
+    image: payments-ms
+    ports:
+      - ${PAYMENTS_PORT}:${PAYMENTS_PORT}
+    environment:
+      - PORT=${PAYMENTS_PORT}
+      - NATS_SERVERS=nats://nats-server:4222
+      - STRIPE_SECRET=${STRIPE_SECRET}
+      - STRIPE_SUCCESS_URL=${STRIPE_SUCCESS_URL}
+      - STRIPE_CANCEL_UR=${STRIPE_CANCEL_UR}
+      - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
