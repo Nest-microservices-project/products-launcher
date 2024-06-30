@@ -9,7 +9,7 @@ services:
     build: 
       context: ./client-gateway
       dockerfile: dockerfile.prod
-    image: client-gateway-prod
+    image: europe-west9-docker.pkg.dev/microservices-shop-nestjs/image-registry/client-gateway-prod
     ports:
       - ${CLIENT_GATEWAY_PORT}:${CLIENT_GATEWAY_PORT}
     environment:
@@ -21,7 +21,7 @@ services:
     build: 
       context: ./auth-ms
       dockerfile: dockerfile.prod
-    image: auth-ms-prod
+    image: europe-west9-docker.pkg.dev/microservices-shop-nestjs/image-registry/auth-ms-prod
     environment:
       - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222
@@ -33,7 +33,7 @@ services:
     build: 
       context: ./products-microservice
       dockerfile: dockerfile.prod
-    image: products-ms-prod
+    image: europe-west9-docker.pkg.dev/microservices-shop-nestjs/image-registry/products-ms-prod
     environment:
       - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222
@@ -46,7 +46,7 @@ services:
       dockerfile: dockerfile.prod
       args:
         - ORDERS_DATABASE_PROD_URL=${ORDERS_DATABASE_PROD_URL}
-    image: orders-ms
+    image: europe-west9-docker.pkg.dev/microservices-shop-nestjs/image-registry/orders-ms
     environment:
       - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222
@@ -63,7 +63,7 @@ services:
     build: 
       context: ./payments-ms
       dockerfile: dockerfile.prod
-    image: payments-ms
+    image: europe-west9-docker.pkg.dev/microservices-shop-nestjs/image-registry/payments-ms
     ports:
       - ${PAYMENTS_PORT}:${PAYMENTS_PORT}
     environment:
