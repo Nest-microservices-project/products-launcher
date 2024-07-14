@@ -19,6 +19,7 @@ This project is about everything learned in the Nestjs microservices course @Fer
 Next we will detail everything we learned, the miscroservices we have, how they communicate with each other, payments, ci-cd ...
 
 ## Overview 
+
 ![](./assets/general-project.png)
 
 The project is a **real ecommerce store application**, complete where we implement all the microservices patterns and clean code.
@@ -29,10 +30,12 @@ As we can see, the flow starts with the user interacting with our application, a
 
 - `Auth-ms` is in charge of generating JWT tokens for authenticate users, using Guard and custom decorators.
        In order to access the other microservices, the token must be included in the HTTP request, so the Auth microservice must have been called beforehand.
+  
 ![](./assets/auth-login.register.png)
     
 - `Payments-ms`: After the user invokes the orders method (Orders-ms), it calls the payment microservice which finally invokes Stripe using its SDK. 
-      When the user has paid, Stripe invokes our Webhook method to update our database (Stock).  
+      When the user has paid, Stripe invokes our Webhook method to update our database (Stock).
+  
 ![](./assets/payment-ms.png)
 
 - `Orders-ms`: The Orders microservice is in charge of storing all orders from our users, communicating and validating the data with the Products microservice.
@@ -50,9 +53,10 @@ When working with microservices, communication between multiple components (micr
 
 ![](./assets/db.png)
 If all our microservices use the same database, in the long run, we may have problems:
-    - If one microservice needs to scale its database, we will have to do it for all of them.
-    - If the database fails, the other microservices will not work.
-    - If a microservice needs a database that adapts to it, it will not be able to, since it is the same for all of them.
+
+- If one microservice needs to scale its database, we will have to do it for all of them.
+- If the database fails, the other microservices will not work.
+- If a microservice needs a database that adapts to it, it will not be able to, since it is the same for all of them.
    
 As a solution, each microservice uses its own database, so we can work in a more flexible and scalable way.
 
@@ -61,10 +65,11 @@ As a solution, each microservice uses its own database, so we can work in a more
 ![](./assets/ci-cd.png)
 
 When it comes to uploading all our work to the servers it is a time-consuming task, since with a small change, we have to do all these steps:
-    - We have to upload the code to a remote repository (Github).
-    - Re-generate Docker images
-    - Store these images.
-    - Upload the code back to the server and all the configuration that goes with it.
+
+- We have to upload the code to a remote repository (Github).
+- Re-generate Docker images
+- Store these images.
+- Upload the code back to the server and all the configuration that goes with it.
 
 With CI-CD, we automate all these steps, so that with a push to a branch, everything is done by itself.
 In the attached figure, we can see how the pipeline is assembled and the components that make it up.
