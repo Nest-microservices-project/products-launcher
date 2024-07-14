@@ -25,19 +25,19 @@ The project is a **real ecommerce store application**, complete where we impleme
 
 As we can see, the flow starts with the user interacting with our application, and as a good practice, the application has a single entry point which is API client `API Gateway`.
     
-    - `The "Gateway" microservice is in charge of receiving the client requests and distributing them among the other corresponding microservices.
+- `The "Gateway" microservice is in charge of receiving the client requests and distributing them among the other corresponding microservices.
 
-    - `Auth-ms` is in charge of generating JWT tokens for authenticate users, using Guard and custom decorators.
+- `Auth-ms` is in charge of generating JWT tokens for authenticate users, using Guard and custom decorators.
        In order to access the other microservices, the token must be included in the HTTP request, so the Auth microservice must have been called beforehand.
 ![](./assets/auth-login.register.png)
     
-    - `Payments-ms`: After the user invokes the orders method (Orders-ms), it calls the payment microservice which finally invokes Stripe using its SDK. 
+- `Payments-ms`: After the user invokes the orders method (Orders-ms), it calls the payment microservice which finally invokes Stripe using its SDK. 
       When the user has paid, Stripe invokes our Webhook method to update our database (Stock).  
 ![](./assets/payment-ms.png)
 
-    - `Orders-ms`: The Orders microservice is in charge of storing all orders from our users, communicating and validating the data with the Products microservice.
+- `Orders-ms`: The Orders microservice is in charge of storing all orders from our users, communicating and validating the data with the Products microservice.
   
-    - `Products-ms`: The Products microservice allows us to create new products to sell in our store, as well as to retrieve available products, modify or delete products.
+- `Products-ms`: The Products microservice allows us to create new products to sell in our store, as well as to retrieve available products, modify or delete products.
 
 
 ## Event pattern
